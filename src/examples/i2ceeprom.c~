@@ -45,15 +45,15 @@ int main(void)
                         printf("Step four\n");
 
 			Start(eeprom);
-
+                        printf("Step five\n");
 
 			Write(eeprom, RCMD, sizeof(RCMD) - 1);
 
-
+                        printf("Step six\n");
 			if(GetAck(eeprom) == ACK)
 			{
 				/* Read in SIZE bytes from the EEPROM chip */
-
+                        printf("Step seven\n");
 				data = Read(eeprom, SIZE);
 				if(data)
 				{
@@ -64,26 +64,26 @@ int main(void)
 						fclose(fp);
 
 						printf("Dumped %d bytes to %s\n", SIZE, FOUT);
-
+                        printf("Step eight\n");
 						retval = EXIT_SUCCESS;
 					}
-
+                        printf("Step nine\n");
 
 					free(data);
-
+                        printf("Step ten\n");
 				}
 	
 				/* Tell libmpsse to send NACKs after reading data */
-
+                        printf("Step eleven\n");
 				SendNacks(eeprom);
 
 				/* Read in one dummy byte, with a NACK */
-
+                        printf("Step twelve\n");
 				Read(eeprom, 1);
 			}
 		}
 
-
+                printf("Step thirteen\n");
 
 		Stop(eeprom);
 	}

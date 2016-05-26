@@ -214,7 +214,7 @@ printf("%d",ftdi_usb_open_desc_index(&mpsse->ftdi, vid, pid, description, serial
 			}
 		}
 	}
-
+printf("dssssddddd");
 	return mpsse;
 }
 
