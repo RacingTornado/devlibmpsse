@@ -17,7 +17,7 @@
 #include <ftdi.h>
 #endif
 
-#include <ftdi.h>
+
 #include "mpsse.h"
 #include "support.h"
 #include "config.h"
@@ -67,7 +67,7 @@ struct mpsse_context *MPSSE(enum modes mode, int freq, int endianess)
 	{
 
 
-printf("a");
+printf("ab");
 		if((mpsse = Open(supported_devices[i].vid, supported_devices[i].pid, mode, freq, endianess, IFACE_A, NULL, NULL)) != NULL)
 		{
 
@@ -142,14 +142,14 @@ struct mpsse_context *OpenIndex(int vid, int pid, enum modes mode, int freq, int
 
 		/* Legacy; flushing is no longer needed, so disable it by default. */
 		FlushAfterRead(mpsse, 0);
-printf("b");
+printf("b142mpsse.c");
 		/* ftdilib initialization */
 		if(ftdi_init(&mpsse->ftdi) == 0)
 		{
 printf("c");
 			/* Set the FTDI interface  */
 			ftdi_set_interface(&mpsse->ftdi, interface);
-printf("%d",ftdi_usb_open_desc_index(&mpsse->ftdi, vid, pid, description, serial, index));
+//printf("%d",ftdi_usb_open_desc_index(&mpsse->ftdi, vid, pid, description, serial, index));
 			/* Open the specified device */
 			if(ftdi_usb_open_desc_index(&mpsse->ftdi, vid, pid, description, serial, index) == 0)
 			{

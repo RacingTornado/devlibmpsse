@@ -17,7 +17,7 @@
 #include <ftdi.h>
 #endif
 
-#include <ftdi.h>
+
 #include "mpsse.h"
 #include "support.h"
 #include "config.h"
@@ -214,7 +214,7 @@ printf("%d",ftdi_usb_open_desc_index(&mpsse->ftdi, vid, pid, description, serial
 			}
 		}
 	}
-printf("dssssddddd");
+
 	return mpsse;
 }
 
