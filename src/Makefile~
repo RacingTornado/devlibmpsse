@@ -5,7 +5,7 @@ PYLIB=/usr/local/lib/python2.7/dist-packages
 SONAME=-soname
 FRAMEWORK=
 BUILD=swig
-LDFLAGS=-lftdi1 /usr/local/lib/libusb-1.0.so
+LDFLAGS=-lftdi1 -L/usr/local/lib/libusb-1.0.so
 CFLAGS=-Wall -fPIC -fno-strict-aliasing -g -O2 -I/usr/local/include/libftdi1
 LIBFTDI1=1
 prefix=/usr/local
@@ -15,12 +15,16 @@ INCDIR=${prefix}/include/libftdi1
 INC=-I$(PYDEV)
 TARGET=mpsse
 
-all: $(TARGET) py$(BUILD)-build
+all: $(TARGET) 
+
+#py$(BUILD)-build
 
 $(TARGET): mpsse.o fast.o
 	$(CC) $(CFLAGS) -shared -Wl,$(SONAME),lib$(TARGET).so $(TARGET).o fast.o support.o \
-		-o lib$(TARGET).so $(LDFLAGS)
-	ar rcs lib$(TARGET).a $(TARGET).o fast.o support.o
+		-o $(TARGET) $(LDFLAGS)
+	#$(CC) $(CFLAGS) -shared -Wl,$(SONAME),lib$(TARGET).so $(TARGET).o fast.o support.o \
+	#	-o lib$(TARGET).so $(LDFLAGS)
+	#ar rcs lib$(TARGET).a $(TARGET).o fast.o support.o
 
 example-code:
 	make -C examples

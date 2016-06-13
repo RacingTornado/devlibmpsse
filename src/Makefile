@@ -15,12 +15,14 @@ INCDIR=${prefix}/include/libftdi1
 INC=-I$(PYDEV)
 TARGET=mpsse
 
-all: $(TARGET) py$(BUILD)-build
+all: $(TARGET) 
+
+#py$(BUILD)-build
 
 $(TARGET): mpsse.o fast.o
-	$(CC) $(CFLAGS) -shared -Wl,$(SONAME),lib$(TARGET).so $(TARGET).o fast.o support.o \
-		-o lib$(TARGET).so $(LDFLAGS)
-	ar rcs lib$(TARGET).a $(TARGET).o fast.o support.o
+	$(CC) $(CFLAGS)  -Wl,$(SONAME),lib$(TARGET).so $(TARGET).o fast.o support.o \
+		-o $(TARGET) $(LDFLAGS)
+
 
 example-code:
 	make -C examples
