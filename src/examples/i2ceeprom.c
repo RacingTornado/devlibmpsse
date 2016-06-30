@@ -14,14 +14,14 @@
 int main(void)
 {
 	FILE *fp = NULL;
-	char *data = NULL;
+	char *data;
+int i;
 	int retval = EXIT_FAILURE;
 	struct mpsse_context *eeprom = NULL;
 
         //eeprom = MPSSE(I2C, FOUR_HUNDRED_KHZ, MSB);
 
         //printf("Step one eeprom value %s\n",*eeprom);
-
 
 	if((eeprom = MPSSE(I2C, FOUR_HUNDRED_KHZ, MSB)) != NULL && eeprom->open)
 
@@ -53,9 +53,9 @@ int main(void)
 			if(GetAck(eeprom) == ACK)
 			{
 				/* Read in SIZE bytes from the EEPROM chip */
-
+                        printf("Step four\n");
 				data = Read(eeprom, SIZE);
-				if(data)
+			if(data)
 				{
 					fp = fopen(FOUT, "wb");
 					if(fp)

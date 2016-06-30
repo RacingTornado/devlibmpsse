@@ -207,7 +207,7 @@ printf("c");
 					else
 					{
 						/* Skip the setup functions if we're just operating in BITBANG mode */
-						if(ftdi_set_bitmode(&mpsse->ftdi, 0xFF, BITMODE_BITBANG) == 0)
+						if(ftdi_set_bitmode(&mpsse->ftdi, 0xff, BITMODE_BITBANG) == 0)
 						{
 							mpsse->open = 1;
 						}
@@ -1312,92 +1312,37 @@ char Version(void)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-/*
- * Example code to read the contents of an I2C EEPROM chip.
- */
-
-
-
-#define SIZE	0x8000		// Size of EEPROM chip (32KB)
-#define WCMD	"\xA0\x00\x00"	// Write start address command
-#define RCMD	"\xA1"		// Read command
-#define FOUT	"eeprom.bin"	// Output file
-
 int main(void)
 {
-	FILE *fp = NULL;
-	char *data = NULL;
-	int retval = EXIT_FAILURE;
-	struct mpsse_context *eeprom = NULL;
+	struct mpsse_context *io = NULL;
+	int i = 0, retval = EXIT_FAILURE;
 
-	if((eeprom = MPSSE(I2C, FOUR_HUNDRED_KHZ, MSB)) != NULL && eeprom->open)
+	io = MPSSE(BITBANG, 0, 0);
+
+	if(io && io->open)
 	{
-		printf("%s initialized at %dHz (I2C)\n", GetDescription(eeprom), GetClock(eeprom));
-
-		/* Write the EEPROM start address */
-		Start(eeprom);
-		Write(eeprom, WCMD, sizeof(WCMD) - 1);
-
-		if(GetAck(eeprom) == ACK)
+		for(i=0; i<10; i++)
 		{
-			/* Send the EEPROM read command */
-			Start(eeprom);
-			Write(eeprom, RCMD, sizeof(RCMD) - 1);
-
-			if(GetAck(eeprom) == ACK)
-			{
-				/* Read in SIZE bytes from the EEPROM chip */
-				data = Read(eeprom, SIZE);
-				if(data)
-				{
-					fp = fopen(FOUT, "wb");
-					if(fp)
-					{
-						fwrite(data, 1, SIZE, fp);
-						fclose(fp);
-
-						printf("Dumped %d bytes to %s\n", SIZE, FOUT);
-						retval = EXIT_SUCCESS;
-					}
-
-					free(data);
-				}
-
-				/* Tell libmpsse to send NACKs after reading data */
-				SendNacks(eeprom);
-
-				/* Read in one dummy byte, with a NACK */
-				Read(eeprom, 1);
-			}
+			PinHigh(io, 0);
+			printf("Pin 0 is: %d\n", PinState(io, 0, -1));
+			sleep(1);
+			
+			PinLow(io, 0);
+			printf("Pin 0 is: %d\n", PinState(io, 0, -1));
+			sleep(1);
 		}
 
-		Stop(eeprom);
+		retval = EXIT_SUCCESS;
 	}
 	else
 	{
-		printf("Failed to initialize MPSSE: %s\n", ErrorString(eeprom));
+		printf("Failed to open MPSSE: %s\n", ErrorString(io));
 	}
 
-	Close(eeprom);
+	Close(io);
 
 	return retval;
 }
-
-
-
-
-
-
 
 
 

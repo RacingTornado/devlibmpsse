@@ -1,5 +1,5 @@
 LDFLAGS=-lmpsse
-CFLAGS=-I/usr/local/include/libftdi1
+CFLAGS=-I/usr/local/include/libftdi1 -g
 
 all: spiflash spiflashfast i2ceeprom ds1305 gpio bitbang
 

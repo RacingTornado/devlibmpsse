@@ -23,7 +23,6 @@ $(TARGET): mpsse.o fast.o
 	$(CC) $(CFLAGS)  -Wl,$(SONAME),lib$(TARGET).so $(TARGET).o fast.o support.o \
 		-o $(TARGET) $(LDFLAGS)
 
-
 example-code:
 	make -C examples
 

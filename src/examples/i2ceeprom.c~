@@ -14,7 +14,8 @@
 int main(void)
 {
 	FILE *fp = NULL;
-	char *data = NULL;
+	char *data;
+int i;
 	int retval = EXIT_FAILURE;
 	struct mpsse_context *eeprom = NULL;
 
@@ -22,7 +23,7 @@ int main(void)
 
         //printf("Step one eeprom value %s\n",*eeprom);
 
-
+data = (char *) malloc(0x9000);
 	if((eeprom = MPSSE(I2C, FOUR_HUNDRED_KHZ, MSB)) != NULL && eeprom->open)
 
 	{
@@ -45,16 +46,20 @@ int main(void)
                         printf("Step four\n");
 
 			Start(eeprom);
-                        printf("Step five\n");
+
 
 			Write(eeprom, RCMD, sizeof(RCMD) - 1);
 
-                        printf("Step six\n");
+
 			if(GetAck(eeprom) == ACK)
 			{
 				/* Read in SIZE bytes from the EEPROM chip */
-                        printf("Step seven\n");
+                        printf("Step four\n");
 				data = Read(eeprom, SIZE);
+                                for(i=0;i<1000;i++)
+{
+				printf("%03x",32);
+}
 				if(data)
 				{
 					fp = fopen(FOUT, "wb");
@@ -64,26 +69,26 @@ int main(void)
 						fclose(fp);
 
 						printf("Dumped %d bytes to %s\n", SIZE, FOUT);
-                        printf("Step eight\n");
+
 						retval = EXIT_SUCCESS;
 					}
-                        printf("Step nine\n");
+
 
 					free(data);
-                        printf("Step ten\n");
+
 				}
 	
 				/* Tell libmpsse to send NACKs after reading data */
-                        printf("Step eleven\n");
+
 				SendNacks(eeprom);
 
 				/* Read in one dummy byte, with a NACK */
-                        printf("Step twelve\n");
+
 				Read(eeprom, 1);
 			}
 		}
 
-                printf("Step thirteen\n");
+
 
 		Stop(eeprom);
 	}

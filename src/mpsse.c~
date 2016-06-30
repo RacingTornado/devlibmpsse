@@ -207,7 +207,7 @@ printf("c");
 					else
 					{
 						/* Skip the setup functions if we're just operating in BITBANG mode */
-						if(ftdi_set_bitmode(&mpsse->ftdi, 0xFF, BITMODE_BITBANG) == 0)
+						if(ftdi_set_bitmode(&mpsse->ftdi, 0xff, BITMODE_BITBANG) == 0)
 						{
 							mpsse->open = 1;
 						}
@@ -874,24 +874,24 @@ char *InternalRead(struct mpsse_context *mpsse, int size)
  * Returns a pointer to the read data on success.
  * Returns NULL on failure.
  */
-#ifdef SWIGPYTHON
-swig_string_data Read(struct mpsse_context *mpsse, int size)
-#else
+//#ifdef SWIGPYTHON
+//swig_string_data Read(struct mpsse_context *mpsse, int size)
+//#else
 char *Read(struct mpsse_context *mpsse, int size)
-#endif
+//#endif
 {
 	char *buf = NULL;
 
 	buf = InternalRead(mpsse, size);
 
-#ifdef SWIGPYTHON
-	swig_string_data sdata = { 0 };
-	sdata.size = size;
-	sdata.data = buf;
-	return sdata;
-#else
+//#ifdef SWIGPYTHON
+//	swig_string_data sdata = { 0 };
+//	sdata.size = size;
+///	sdata.data = buf;
+//	return sdata;
+//#else
 	return buf;
-#endif
+//#endif
 }
 
 /*
@@ -1006,14 +1006,14 @@ char *Transfer(struct mpsse_context *mpsse, char *data, int size)
 		}
 	}
 
-#ifdef SWIGPYTHON
-	swig_string_data sdata = { 0 };
-	sdata.size = n;
-	sdata.data = (char *) buf;
-	return sdata;
-#else
+//#ifdef SWIGPYTHON
+//	swig_string_data sdata = { 0 };
+//	sdata.size = n;
+//	sdata.data = (char *) buf;
+//	return sdata;
+//#else
 	return (char *) buf;
-#endif
+//#endif
 }
 
 /*
@@ -1312,9 +1312,43 @@ char Version(void)
 }
 
 
-void main()
-
+int main(void)
 {
+	struct mpsse_context *io = NULL;
+	int i = 0, retval = EXIT_FAILURE;
 
+	io = MPSSE(BITBANG, 0, 0);
 
+	if(io && io->open)
+	{
+		for(i=0; i<10; i++)
+		{
+			PinHigh(io, 0);
+			printf("Pin 0 is: %d\n", PinState(io, 0, -1));
+			sleep(1);
+			
+			PinLow(io, 0);
+			printf("Pin 0 is: %d\n", PinState(io, 0, -1));
+			sleep(1);
+		}
+
+		retval = EXIT_SUCCESS;
+	}
+	else
+	{
+		printf("Failed to open MPSSE: %s\n", ErrorString(io));
+	}
+
+	Close(io);
+
+	return retval;
 }
+
+
+
+
+
+
+
+
+

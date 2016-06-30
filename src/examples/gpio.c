@@ -11,7 +11,7 @@ int main(void)
 	
 	if(io && io->open)
 	{
-		for(i=0; i<10; i++)
+		for(i=0; i<1; i++)
 		{
 			PinHigh(io, GPIOL0);
 			printf("GPIOL0 State: %d\n", PinState(io, GPIOL0, -1));
