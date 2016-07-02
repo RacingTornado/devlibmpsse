@@ -21,9 +21,8 @@ int i;
 
         //eeprom = MPSSE(I2C, FOUR_HUNDRED_KHZ, MSB);
 
-        //printf("Step one eeprom value %s\n",*eeprom);
+        printf("Step one eeprom value\n");
 
-data = (char *) malloc(0x9000);
 	if((eeprom = MPSSE(I2C, FOUR_HUNDRED_KHZ, MSB)) != NULL && eeprom->open)
 
 	{
@@ -56,11 +55,7 @@ data = (char *) malloc(0x9000);
 				/* Read in SIZE bytes from the EEPROM chip */
                         printf("Step four\n");
 				data = Read(eeprom, SIZE);
-                                for(i=0;i<1000;i++)
-{
-				printf("%03x",32);
-}
-				if(data)
+			if(data)
 				{
 					fp = fopen(FOUT, "wb");
 					if(fp)

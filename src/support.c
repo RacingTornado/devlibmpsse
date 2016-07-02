@@ -15,6 +15,7 @@
 
 #include "mpsse.h"
 #include "support.h"
+#include <stdio.h>
 
 /* Write data to the FTDI chip */
 int raw_write(struct mpsse_context *mpsse, unsigned char *buf, int size)
@@ -35,29 +36,8 @@ int raw_write(struct mpsse_context *mpsse, unsigned char *buf, int size)
 /* Read data from the FTDI chip */
 int raw_read(struct mpsse_context *mpsse, unsigned char *buf, int size)
 {
-	int n = 0, r = 0;
-
-	if(mpsse->mode)
-	{
-		while(n < size)
-		{
-			r = ftdi_read_data(&mpsse->ftdi, buf, size);
-			if(r < 0) break;
-			n += r;
-		}
-
-		if(mpsse->flush_after_read)
-		{
-			/* 
-			 * Make sure the buffers are cleared after a read or subsequent reads may fail.
-			 * 
-			 * Is this needed anymore? It slows down repetitive read operations by ~8%.
-			 */
-			ftdi_usb_purge_rx_buffer(&mpsse->ftdi);
-		}
-	}
-
-	return n;
+	printf("Raw");
+	return 1;
 }
 
 /* Sets the read and write timeout periods for bulk usb data transfers. */

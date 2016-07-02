@@ -758,7 +758,7 @@ int Write(struct mpsse_context *mpsse, char *data, int size)
 {
 	unsigned char *buf = NULL;
 	int retval = MPSSE_FAIL, buf_size = 0, txsize = 0, n = 0;
-
+printf("wwwwwwwwwwwww");
 	if(is_valid_context(mpsse))
 	{
 		if(mpsse->mode)
@@ -874,24 +874,24 @@ char *InternalRead(struct mpsse_context *mpsse, int size)
  * Returns a pointer to the read data on success.
  * Returns NULL on failure.
  */
-//#ifdef SWIGPYTHON
-//swig_string_data Read(struct mpsse_context *mpsse, int size)
-//#else
+#ifdef SWIGPYTHON
+swig_string_data Read(struct mpsse_context *mpsse, int size)
+#else
 char *Read(struct mpsse_context *mpsse, int size)
-//#endif
+#endif
 {
 	char *buf = NULL;
 
 	buf = InternalRead(mpsse, size);
 
-//#ifdef SWIGPYTHON
-//	swig_string_data sdata = { 0 };
-//	sdata.size = size;
-///	sdata.data = buf;
-//	return sdata;
-//#else
+#ifdef SWIGPYTHON
+	swig_string_data sdata = { 0 };
+	sdata.size = size;
+	sdata.data = buf;
+	return sdata;
+#else
 	return buf;
-//#endif
+#endif
 }
 
 /*
@@ -1006,14 +1006,14 @@ char *Transfer(struct mpsse_context *mpsse, char *data, int size)
 		}
 	}
 
-//#ifdef SWIGPYTHON
-//	swig_string_data sdata = { 0 };
-//	sdata.size = n;
-//	sdata.data = (char *) buf;
-//	return sdata;
-//#else
+#ifdef SWIGPYTHON
+	swig_string_data sdata = { 0 };
+	sdata.size = n;
+	sdata.data = (char *) buf;
+	return sdata;
+#else
 	return (char *) buf;
-//#endif
+#endif
 }
 
 /*

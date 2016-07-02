@@ -21,7 +21,7 @@ int i;
 
         //eeprom = MPSSE(I2C, FOUR_HUNDRED_KHZ, MSB);
 
-        //printf("Step one eeprom value %s\n",*eeprom);
+        printf("Step one exxxxeprom value\n");
 
 	if((eeprom = MPSSE(I2C, FOUR_HUNDRED_KHZ, MSB)) != NULL && eeprom->open)
 
